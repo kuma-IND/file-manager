@@ -1,0 +1,126 @@
+hetvichauhan091206
+P@ssw0rd123456
+p@ssw0rd123456
+
+SELECT GROUP_CONCAT(id) AS ids, GROUP_CONCAT(active) AS active, image, COUNT(*) c FROM product_images_master GROUP BY image HAVING c > 1 ORDER BY c desc
+
+/////////////
+
+ALTER TABLE `product_master` ADD `slug` TEXT NULL AFTER `id`;
+
+ALTER TABLE `paper_code_master` ADD `supplier_id` INT NOT NULL AFTER `name`, ADD `short_desc` TEXT NULL AFTER `supplier_id`, ADD `product_description` TEXT NULL AFTER `short_desc`;
+
+ALTER TABLE `texture_master` ADD `supplier_id` INT NOT NULL AFTER `name`, ADD `short_desc` TEXT NULL AFTER `supplier_id`
+
+ALTER TABLE `texture_master` CHANGE `description` `product_description` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+-------------------------------------------------------------
+
+SELECT
+product.id,
+product.name,
+COALESCE(product.rate,'') AS mrp,
+COALESCE(product.cost_rate,'') AS cp_u
+FROM 
+product_master product 
+INNER JOIN 
+producttype_sub_master producttype_sub 
+ON 
+product.producttype_sub_id = producttype_sub.id AND 
+product.active = 1 AND 
+producttype_sub.active = 1 AND 
+producttype_sub.name NOT IN ('new_veneer')
+ORDER BY 
+product.name
+
+-------------------------------------------------------------
+
+SELECT
+product.id,
+product.name,
+COALESCE(IF(product.orientation=1,'Horizontal',IF(product.orientation=2,'Vertical',IF(product.orientation=3,'Box',IF(product.orientation=4,'Cross','Herringbone')))),'') AS orientation,
+COALESCE(product_finish.name,'') AS product_finish,
+COALESCE(product_species.name,'') AS species_name,
+COALESCE(product_grade.name,'') AS grade_name,
+COALESCE(grain_pattern.name,'') AS grain_pattern_name
+
+FROM
+product_master product
+INNER JOIN
+producttype_sub_master producttype_sub
+ON
+product.producttype_sub_id = producttype_sub.id AND
+producttype_sub.active = 1 AND
+product.active = 1
+INNER JOIN
+producttype_super_master producttype_super
+ON
+producttype_sub.producttype_super_id = producttype_super.id AND
+producttype_sub.active = 1 AND
+producttype_super.active = 1
+INNER JOIN
+producttype_master producttype
+ON
+producttype_sub.producttype_id = producttype.id AND
+producttype_sub.active = 1 AND
+producttype.active = 1 AND
+producttype.name LIKE 'VENEER'
+LEFT JOIN
+product_status_master product_status
+ON
+product.product_status_id = product_status.id
+LEFT JOIN
+product_species_master product_species
+ON
+product.product_species_id = product_species.id
+LEFT JOIN
+product_grade_master product_grade
+ON
+product.product_grade_id = product_grade.id
+LEFT JOIN
+product_finish_master product_finish
+ON
+product.product_finish_id = product_finish.id
+LEFT JOIN
+grain_pattern_master grain_pattern
+ON
+product.grain_pattern_id = grain_pattern.id
+LEFT JOIN
+texture_master
+ON
+product.texture_id = texture_master.id
+LEFT JOIN
+paper_code_master
+ON
+product.paper_code_id = paper_code_master.id
+ORDER BY
+product.name
+
+-------------------------------------------------------------
+
+SELECT
+product.id,
+product.name
+FROM
+product_master product
+INNER JOIN
+producttype_sub_master producttype_sub
+ON
+product.producttype_sub_id = producttype_sub.id AND
+producttype_sub.active = 1 AND
+product.active = 1
+INNER JOIN
+producttype_super_master producttype_super
+ON
+producttype_sub.producttype_super_id = producttype_super.id AND
+producttype_sub.active = 1 AND
+producttype_super.active = 1
+INNER JOIN
+producttype_master producttype
+ON
+producttype_sub.producttype_id = producttype.id AND
+producttype_sub.active = 1 AND
+producttype.active = 1 AND
+producttype.name LIKE 'PLYWOOD'
+ORDER BY
+product.name

@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.scss"],"names":[],"mappings":"AAAA,WAAW,CAAC;EACV,KAAK,EAAE,IAAI,GACZ;;AAED,EAAE,CAAC;EACD,UAAU,EAAE,MAAM,GACnB;;AAED,EAAE,EAAE,EAAE,CAAC;EACL,WAAW,EAAE,MAAM,GACpB","file":"index-ce263a7b43.css","sourcesContent":[".small_cell {\r\n  width: 50px;\r\n}\r\n\r\nth {\r\n  text-align: center;\r\n}\r\n\r\nth, td {\r\n  white-space: nowrap;\r\n}"]}

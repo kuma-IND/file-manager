@@ -1,0 +1,16 @@
+.small_cell {
+  width: 50px; }
+
+th {
+  text-align: center; }
+
+th, td {
+  white-space: nowrap; }
+
+#selected_files {
+  margin-top: 15px !important; }
+
+.progress_cell {
+  padding: 0 !important; }
+
+/*# sourceMappingURL=index-ad97761b0a.css.map */
